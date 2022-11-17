@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1>Search</h1>
+
+<form id="search" method="post" asp-action="" ><!--enctype="application/x-www-form-urlencoded"-->
+    <div>
+        <label for="search">Searched item name</label>
+    </div>
+    <div>
+        <input name="search" type="text" />
+    </div>
+
+
+    <div>
+        <label for="new">new</label>
+        <input name="condition" type="radio" />
+
+        <label for="used">used</label>
+        <input name="condition" type="radio" />
+    </div>
+    <div>
+        <input type="submit" value="Submit" />
+    </div>
+
+
+    <fieldset id="group1">
+        <input type="radio" value="value1" name="group1">
+        <input type="radio" value="value2" name="group1">
+    </fieldset>
+
+    <fieldset id="group2">
+        <input type="radio" value="value1" name="group2">
+        <input type="radio" value="value2" name="group2">
+        <input type="radio" value="value3" name="group2">
+    </fieldset>
+
+
+</form>
