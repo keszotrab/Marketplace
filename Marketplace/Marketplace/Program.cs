@@ -9,7 +9,7 @@ namespace Marketplace
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddDistributedMemoryCache();////////
             builder.Services.AddSession(options =>
             {

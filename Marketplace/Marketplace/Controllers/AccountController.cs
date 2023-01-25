@@ -8,9 +8,13 @@ namespace Marketplace.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            using (AppDbContext db = new AppDbContext())
+            {
+                return View(db.userAccount.ToList());
+            }
+                
         }
-
+        
         public IActionResult Register()
         {
 
@@ -53,14 +57,6 @@ namespace Marketplace.Controllers
                     HttpContext.Session.SetString("Username", usr.Userame.ToString());
 
 
-
-                    //HttpContext.Session.SetString("UserID", usr.UserID.ToString());
-                    //HttpContext.Session.SetString(usr.Userame.ToString(), "Username");
-
-
-                    //HttpContext.Session["UserID"] = usr.UserID.ToString();
-                    //context.Session["Test key"] = "Test value";
-
                     return RedirectToAction("LoggedIn");
                 }
                 else
@@ -76,10 +72,11 @@ namespace Marketplace.Controllers
 
             if (HttpContext.Session.Get("UserID") != null)
             {
-                
+                return View();
             }
-
-            return View();
+            else { 
+            return RedirectToAction("Login");
+            }
         }
 
     }
