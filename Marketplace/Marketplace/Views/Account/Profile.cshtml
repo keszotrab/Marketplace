@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Login";
+    
+}
+
+@if(Context.Session.GetString("UserID") != null)
+{
+    <h1>Hello @Context.Session.GetString("Username")</h1>
+
+
+    <div><a asp-controller="Account" asp-action="MyProducts"><h2>My products</h2></a></div>
+    <div><a asp-controller="Account" asp-action="BoughtProducts"><h2>Bought</h2></a></div>
+    <div><a asp-controller="Account" asp-action="SoldProducts"><h2>Sold</h2></a></div>
+    
+}
+else
+{
+<h4>You aren't logged in! Please log in again!</h4>
+}

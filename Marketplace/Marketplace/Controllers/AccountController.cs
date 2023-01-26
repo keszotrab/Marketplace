@@ -6,6 +6,7 @@ namespace Marketplace.Controllers
 {
     public class AccountController : Controller
     {
+        /*
         public IActionResult Index()
         {
             using (AppDbContext db = new AppDbContext())
@@ -14,7 +15,8 @@ namespace Marketplace.Controllers
             }
                 
         }
-        
+        */
+
         public IActionResult Register()
         {
 
@@ -52,12 +54,14 @@ namespace Marketplace.Controllers
                 var usr = db.userAccount.Single(u => u.Userame == user.Userame && u.Password == user.Password);
                 if (usr != null)
                 {
+                    
 
                     HttpContext.Session.SetString("UserID", usr.UserID.ToString());
                     HttpContext.Session.SetString("Username", usr.Userame.ToString());
+                    HttpContext.Session.SetInt32("Logged", 1);
 
 
-                    return RedirectToAction("LoggedIn");
+                    return RedirectToAction("Profile");
                 }
                 else
                 {
@@ -67,7 +71,7 @@ namespace Marketplace.Controllers
             return View();
         }
 
-        public IActionResult LoggedIn()
+        public IActionResult Profile()
         {
 
             if (HttpContext.Session.Get("UserID") != null)
@@ -79,5 +83,25 @@ namespace Marketplace.Controllers
             }
         }
 
+        public IActionResult MyProducts()
+        {
+            return View();
+        }
+
+        public IActionResult BoughtProducts()
+        {
+            return View();
+        }
+
+        public IActionResult SoldProducts()
+        {
+            return View();
+        }
+
+
+
+
+
     }
+
 }

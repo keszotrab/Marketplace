@@ -29,10 +29,10 @@
     </div>
 </div>
 
-<div><a asp-controller="Account" asp-action="Register"> Don't have an account yet? Reg</a></div>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Account" asp-action="Register"> Don't have an account yet? Register!</a>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
