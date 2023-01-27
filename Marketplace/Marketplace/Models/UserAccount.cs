@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Marketplace.Models
 {
@@ -31,9 +32,10 @@ namespace Marketplace.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Confirm your password")]
-        [DataType(DataType.Password)]
-        public string ConfirmPassword { get; set; }
+        //[Required(ErrorMessage = "Confirm your password")]
+        //[DataType(DataType.Password)]
+        [HiddenInput]
+        public string? Rank { get; set; }
 
 
     }
