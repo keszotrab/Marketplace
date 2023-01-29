@@ -1,41 +1,88 @@
-﻿
+﻿@model IEnumerable<Marketplace.Models.Product>
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "MyProducts";
+
+}
+
 @{
     ViewData["Title"] = "Search";
 }
-
 <h1>Search</h1>
 
-<form id="search" method="post" asp-action="" ><!--enctype="application/x-www-form-urlencoded"-->
-    <div>
-        <label for="search">Searched item name</label>
-    </div>
-    <div>
-        <input name="search" type="text" />
-    </div>
+    <form method="get" asp-action="Search">
+    <p>
+        <input type="seach" placeholder="enter name or descryption" ..... value="@ViewData[" GetProdDetails"]" name="prodSearch" style="width:500px"></input>
+        <input type="submit" value="Search" name="prodSearch" class="btn btn-primary"></input>
+        <a asp-action="Search">Get all Products</a>
+    </p>
 
+    </form>
 
-    <div>
-        <label for="new">new</label>
-        <input name="condition" type="radio" />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descryption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price) (PLN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Img)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sellerId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
 
-        <label for="used">used</label>
-        <input name="condition" type="radio" />
-    </div>
-    <div>
-        <input type="submit" value="Submit" />
-    </div>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descryption)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Img)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sellerId)
+                </td>
+                @if (Context.Session.GetInt32("UserID") == item.sellerId || Context.Session.GetString("Rank") == "Admin" && Context.Session.GetInt32("Logged") == 1)
+                {
+                    <td>
+                        <a asp-controller="Account" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="Account" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="Account" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+                else if (Context.Session.GetInt32("Logged") == 1 && Context.Session.GetInt32("UserID") != item.sellerId)
+                {
+                    <td>
+                        <a asp-controller="Account" asp-action="Buy" asp-route-id="@item.Id">Buy</a> |
+                    </td>
+                
+                }
+            </tr>
 
-
-    <fieldset id="group1">
-        <input type="radio" value="value1" name="group1">
-        <input type="radio" value="value2" name="group1">
-    </fieldset>
-
-    <fieldset id="group2">
-        <input type="radio" value="value1" name="group2">
-        <input type="radio" value="value2" name="group2">
-        <input type="radio" value="value3" name="group2">
-    </fieldset>
-
-
-</form>
+        }
+    </tbody>
+</table>

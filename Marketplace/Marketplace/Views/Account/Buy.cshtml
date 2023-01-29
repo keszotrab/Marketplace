@@ -1,0 +1,44 @@
+﻿@model Marketplace.Models.Transaction
+
+@{
+    ViewData["Title"] = "Buy";
+    
+        string prodName;
+        using (AppDbContext db = new AppDbContext())
+        {
+            int buyProId = (int)Context.Session.GetInt32("buyProdId");
+            var prod = db.product.Single(p => p.Id == buyProId);
+            prodName = prod.Name;
+        }
+        
+    
+}
+
+<h1>Buy</h1>
+
+<h4>Transaction</h4>
+<h4>@prodName</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Buy">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="count" class="control-label"></label>
+                <input asp-for="count" class="form-control" />
+                <span asp-validation-for="count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Buy" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

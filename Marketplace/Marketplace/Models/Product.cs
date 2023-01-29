@@ -20,6 +20,7 @@ namespace Marketplace.Models
         public string Descryption { get; set; }
 
         [Required(ErrorMessage = "Price of the product is required")]
+        [DisplayFormat(DataFormatString = "{0:#,##0.00#}", ApplyFormatInEditMode = true)]
         public double Price { get; set; }
         public byte[]? Img { get; set; }
         public int sellerId { get; set; }

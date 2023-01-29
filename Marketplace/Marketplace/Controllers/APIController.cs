@@ -12,7 +12,7 @@ namespace Marketplace.Controllers
     {
 
         [HttpGet]
-        //[Route("{id}")]
+        [Route("{id}")]
         public IActionResult Get(int? id)
         {
             if (id == null)
@@ -36,7 +36,7 @@ namespace Marketplace.Controllers
                 }
             }
         }
-
+        /*
         [HttpPost]
         public ActionResult<UserAccount> Add([FromBody] UserAccount acc)
         {
@@ -97,7 +97,7 @@ namespace Marketplace.Controllers
         }
         
 
-
+        */
 
         /*
         [HttpGet]

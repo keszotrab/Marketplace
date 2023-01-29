@@ -26,6 +26,8 @@ namespace Marketplace.Migrations
                     table.PrimaryKey("PK_category", x => x.Id);
                 });
 
+
+
             migrationBuilder.DropTable("product");
             migrationBuilder.CreateTable(
                 name: "product",
@@ -45,7 +47,9 @@ namespace Marketplace.Migrations
                     table.PrimaryKey("PK_product", x => x.Id);
                 });
 
-            //migrationBuilder.DropTable("transaction");
+
+
+            migrationBuilder.DropTable("transaction");
             migrationBuilder.CreateTable(
                 name: "transaction",
                 columns: table => new
