@@ -32,6 +32,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    @if (Context.Session.GetInt32("Logged") == 1)
+                    { 
+                        
+                    }
                     @if (Context.Session.GetInt32("Logged") != 1)
                     {
                         <a asp-controller="Account" asp-action="Login"><button type="button"><img src="/content/acc_icon.png"></img></button></a>
