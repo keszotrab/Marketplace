@@ -10,18 +10,7 @@ namespace Marketplace.Controllers
     [ApiController]
     public class APIController : ControllerBase
     {
-        /*
-        [HttpGet]
-        public IActionResult Get()
-        {
-            {
-                using (AppDbContext db = new AppDbContext())
-                {
-                    yield return new OkObjectResult(db.userAccount.ToList());
-                }
-            }
-        }
-        */
+
 
 
         [HttpGet]
@@ -49,6 +38,37 @@ namespace Marketplace.Controllers
                 }
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
+        [HttpGet]
+        public IActionResult Get()
+        {
+            {
+                using (AppDbContext db = new AppDbContext())
+                {
+                    yield return new OkObjectResult(db.userAccount.ToList());
+                }
+            }
+        }
+        */
+
+
+
+
         /*
         [HttpPost]
         public ActionResult<UserAccount> Add([FromBody] UserAccount acc)
