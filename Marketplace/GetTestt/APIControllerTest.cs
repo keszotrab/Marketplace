@@ -3,9 +3,10 @@ using System.Configuration;
 using System.Runtime.InteropServices;
 using Marketplace.Controllers;
 using Marketplace.Models;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol;
-using Xunit.Sdk; 
+using Xunit.Sdk;
 
 namespace GetTest
 {
@@ -36,7 +37,7 @@ namespace GetTest
             //Then
             Assert.Equal(expected.UserID, actualUser.UserID);
             Assert.Equal(expected.Rank, actualUser.Rank);
-            
+
         }
     }
 }
