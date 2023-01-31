@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Marketplace\Marketplace.csproj" />
+    <ProjectReference Include="..\Marketplace\Marketplace.csproj" /> 
   </ItemGroup>
 
 </Project>
