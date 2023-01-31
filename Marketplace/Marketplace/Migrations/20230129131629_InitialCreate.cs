@@ -12,7 +12,7 @@ namespace Marketplace.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable("category");
+            //migrationBuilder.DropTable("category");
             migrationBuilder.CreateTable(
                 name: "category",
                 columns: table => new
@@ -28,7 +28,7 @@ namespace Marketplace.Migrations
 
 
 
-            migrationBuilder.DropTable("product");
+            //migrationBuilder.DropTable("product");
             migrationBuilder.CreateTable(
                 name: "product",
                 columns: table => new
@@ -49,7 +49,7 @@ namespace Marketplace.Migrations
 
 
 
-            migrationBuilder.DropTable("transaction");
+            //migrationBuilder.DropTable("transaction");
             migrationBuilder.CreateTable(
                 name: "transaction",
                 columns: table => new
@@ -66,7 +66,7 @@ namespace Marketplace.Migrations
                     table.PrimaryKey("PK_transaction", x => x.Id);
                 });
 
-            migrationBuilder.DropTable("userAccount");
+            //migrationBuilder.DropTable("userAccount");
             migrationBuilder.CreateTable(
                 name: "userAccount",
                 columns: table => new
