@@ -1,0 +1,40 @@
+﻿@model Marketplace.Models.Product
+
+@{
+    ViewData["Title"] = "Edit";
+    //string name = Model.Name;
+}
+
+<h1>Make a username Admin</h1>
+<h4>In order to make a user admin, write their username in the box and write "Admin" in the rank. If you want to take admin privillages away from the user, write "user" in the rank section.</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="MakeAdmin" method="post">
+            <input type="hidden" asp-for="Id" />    
+            <div class="form-group">
+                <label class="control-label">Username</label>
+                <input name="username" value="" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Rank</label>
+                <input name="rank" value="" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<h2>@ViewBag.RankMessage</h2>
+
+<div>
+    <a asp-action="MyProducts">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

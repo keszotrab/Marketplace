@@ -20,30 +20,37 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Categories">Categories</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Search">Search</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                     </ul>
-                    @if (Context.Session.GetInt32("Logged") == 1)
-                    { 
-                        
-                    }
-                    @if (Context.Session.GetInt32("Logged") != 1)
-                    {
-                        <a asp-controller="Account" asp-action="Login"><button type="button"><img src="/content/acc_icon.png"></img></button></a>
-                    }
-                    else if (Context.Session.GetInt32("Logged") == 1)
-                    {
-                        <a asp-controller="Account" asp-action="Profile"><button type="button"><img src="/content/acc_icon.png"></img></button></a>
-                    }
+                    <div style="float=left">
+                        <ul class="navbar-nav flex-grow-1">
+                            @if (Context.Session.GetString("Rank") == "Admin" && Context.Session.GetInt32("Logged") == 1)
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Account" asp-action="MakeAdmin"><button type="button">MakeAdmin</button></a>
+                                </li>
+                            }
+                            @if (Context.Session.GetInt32("Logged") == 1)
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Account" asp-action="LogOut"><button type="button">Log Out</button></a>
+                                </li>
+                            }
+                            @if (Context.Session.GetInt32("Logged") != 1)
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Account" asp-action="Login"><button title="Login" type="button"><img src="/content/acc_icon.png"></img></button></a>
+                                </li>
+                            }
+                            else if (Context.Session.GetInt32("Logged") == 1)
+                            {
+                                <li class="nav-item">
+                                    <a asp-controller="Account" asp-action="Profile"><button title="Profile" type="button"><img src="/content/acc_icon.png"></img></button></a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>

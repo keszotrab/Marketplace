@@ -12,7 +12,7 @@
 
     <form method="get" asp-action="Search">
     <p>
-        <input type="seach" placeholder="enter name or descryption" ..... value="@ViewData[" GetProdDetails"]" name="prodSearch" style="width:500px"></input>
+        <input type="search" placeholder="enter name or descryption" ..... value="@ViewData[" GetProdDetails"]" name="prodSearch" style="width:500px"></input>
         <input type="submit" value="Search" name="prodSearch" class="btn btn-primary"></input>
         <a asp-action="Search">Get all Products</a>
     </p>
@@ -26,19 +26,13 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
+                Category
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Descryption)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Price) (PLN)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Img)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.sellerId)
             </th>
             <th></th>
         </tr>
@@ -51,9 +45,27 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryId)
-                </td>
+                @{
+                    using (AppDbContext db = new AppDbContext())
+                    {
+                        string categoryName = null;
+                        foreach (var item2 in db.category)
+                        {
+                            if(item2.Id == item.CategoryId)
+                            {
+                                categoryName = item2.Name;
+                            }
+                        }
+                        if (categoryName == null)
+                        {
+                            categoryName = "brak kategorii";
+                        }
+
+                        <td>
+                            @categoryName
+                        </td>
+                    }
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.Descryption)
                 </td>
@@ -63,21 +75,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Img)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.sellerId)
-                </td>
                 @if (Context.Session.GetInt32("UserID") == item.sellerId || Context.Session.GetString("Rank") == "Admin" && Context.Session.GetInt32("Logged") == 1)
                 {
                     <td>
                         <a asp-controller="Account" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-controller="Account" asp-action="Details" asp-route-id="@item.Id">Details</a> |
                         <a asp-controller="Account" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 }
                 else if (Context.Session.GetInt32("Logged") == 1 && Context.Session.GetInt32("UserID") != item.sellerId)
                 {
                     <td>
-                        <a asp-controller="Account" asp-action="Buy" asp-route-id="@item.Id">Buy</a> |
+                        <a asp-controller="Account" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="Account" asp-action="Buy" asp-route-id="@item.Id">Buy</a> 
                     </td>
                 
                 }

@@ -2,6 +2,8 @@
 using Marketplace.Models;
 using Microsoft.AspNetCore.Http;
 using System.Security.Principal;
+using NuGet.Packaging.Signing;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Marketplace.Controllers
 {
@@ -31,17 +33,48 @@ namespace Marketplace.Controllers
             {
                 using (AppDbContext db = new AppDbContext())
                 {
-                    db.userAccount.Add(account);
-                    db.SaveChanges();
 
+                    var exists = db.userAccount.Where(u => u.Userame == account.Userame);
+                    int asd = exists.Count();
+
+                    if (asd > 0)
+                    {
+                        ViewBag.Message = "Account with this username already exists!";
+                        return View();
+                    }
+                    else 
+                    {
+                        db.userAccount.Add(account);
+                        db.SaveChanges();
+
+                        ModelState.Clear();
+                        ViewBag.Message = "Your account has been successfully created " + account.FirstName + ". You can now login to your account!";
+
+                        return View();
+                    }
 
                 }
-                ModelState.Clear();
-                ViewBag.Message = "Your account has been successfully created " + account.FirstName + ". You can now login to your account!";
+                
                 //add vldin
             }
+
+            ViewBag.Message = "Something went wrong, account wasn't created.";
             return View();
         }
+
+
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+
+
+            return View("Login");
+        }
+
+
+
+
 
         public IActionResult Login()
         {
@@ -104,25 +137,34 @@ namespace Marketplace.Controllers
             }
         }
 
-        [Route("Account/MyProducts/Edit/{id}")]
+
         [HttpPost]
+        [Route("Account/MyProducts/Edit/{id}")]
         public IActionResult Edit(int id, Product product)
         {
-            using (AppDbContext db = new AppDbContext())
+            if (product.sellerId == HttpContext.Session.GetInt32("UserID"))
             {
-                Product prod = db.product.Single(p => p.Id == 1);
-                prod.Name = product.Name;
-                prod.Descryption = product.Descryption;
-                prod.Price = product.Price;
-                prod.CategoryId = product.CategoryId;
-                db.SaveChanges();
+                using (AppDbContext db = new AppDbContext())
+                {
+                    Product prod = db.product.Single(p => p.Id == 1);
+                    prod.Name = product.Name;
+                    prod.Descryption = product.Descryption;
+                    prod.Price = product.Price;
+                    prod.CategoryId = product.CategoryId;
+                    db.SaveChanges();
 
+                }
+                ModelState.Clear();
+
+                ViewBag.Message = "Your have successfully edited your item!";
+                return View("Profile");
+                //return View("Details",  product.Id);
             }
-            ModelState.Clear();
-
-            ViewBag.Message = "Your have successfully edited your item!";
-            return View(product);
-            //return View("Details",  product.Id);
+            else
+            {
+                ViewBag.MessageNotLogged = "You can't edit without being logged in!";
+                return View("Login");
+            }
         }
 
         [Route("Account/MyProducts/Edit/{id}")]
@@ -135,6 +177,7 @@ namespace Marketplace.Controllers
                 return View(prod);
             }
         }
+
         public IActionResult Create()
         {
             return View();
@@ -146,7 +189,7 @@ namespace Marketplace.Controllers
             if (stillLogged())
             {
                 product.Img = null;
-                product.sellerId = 1;
+                product.sellerId = (int)HttpContext.Session.GetInt32("UserID"); ;
 
                 if (ModelState.IsValid)
                 {
@@ -165,7 +208,9 @@ namespace Marketplace.Controllers
                     //add vldin
                 }
             }
-            return View();
+
+            ViewBag.MessageNotLogged = "You can't add products without being logged in!";
+            return View("Login");
         }
 
 
@@ -218,18 +263,6 @@ namespace Marketplace.Controllers
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         [Route("Account/MyProducts/Delete/{id}")]
         public IActionResult Delete(int id)
         {
@@ -249,16 +282,29 @@ namespace Marketplace.Controllers
         {
             using (AppDbContext db = new AppDbContext())
             {
-
                 var prod = db.product.Single(p => p.Id == id);
-                db.product.Remove(prod);
-                db.SaveChanges();
 
 
 
+                if (prod.sellerId == HttpContext.Session.GetInt32("UserID"))
+                {
+                    db.product.Remove(prod);
+                    db.SaveChanges();
 
 
-                return View();
+                    ModelState.Clear();
+
+                    ViewBag.Message = "Your have successfully deleted your item!";
+                    return View("Profile");
+
+                }
+                else
+                {
+                    ViewBag.MessageNotLogged = "You can't delete without being logged in!";
+                    return View("Login");
+                }
+
+
             }
         }
 
@@ -267,10 +313,51 @@ namespace Marketplace.Controllers
 
         public IActionResult BoughtProducts()
         {
+            using (AppDbContext db = new AppDbContext())
+            {
+                return View(db.transaction.ToList());
+            }
+        }
+        
+        public IActionResult SoldProducts()
+        {
+            using (AppDbContext db = new AppDbContext())
+            {
+                return View(db.transaction.ToList());
+            }
+        }
+
+
+        public IActionResult MakeAdmin()
+        {
+            ViewBag.RankMessage = null;
             return View();
         }
 
-        public IActionResult SoldProducts()
+
+        [HttpPost]
+        public IActionResult MakeAdmin(string username, string rank)
+        {
+            if (HttpContext.Session.GetString("Rank") == "Admin" && username != HttpContext.Session.GetString("Username"))
+            {
+                using (AppDbContext db = new AppDbContext())
+                {
+                    var user = db.userAccount.Single(p => p.Userame == username);
+                    user.Rank = rank;
+                    db.SaveChanges();
+
+                    ViewBag.RankMessage = "You have succesfully changed " + user.Userame + "'s rank to " + user.Rank + "!";
+                    return View();
+                }
+            }
+            else
+            {
+                return View("Error");
+                //exception maybe?
+            }
+        }
+
+        public IActionResult Error()
         {
             return View();
         }
@@ -278,16 +365,7 @@ namespace Marketplace.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
+        /*
 
         /////////////////////////////////////////////////////////////////////////
         public IActionResult AddProduct()
@@ -296,7 +374,7 @@ namespace Marketplace.Controllers
             return View();
         }
 
-
+        
         [HttpPost]
         public IActionResult AddProduct(Product product)
         {
@@ -326,14 +404,7 @@ namespace Marketplace.Controllers
             return View();
         }
 
-
-
-
-
-
-
-
-
+        */
 
         /////////////////////////////////////////////////////////////////////////
         public bool stillLogged()

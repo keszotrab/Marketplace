@@ -2,49 +2,70 @@
 
 @{
     ViewData["Title"] = "BoughtProducts";
+
+    
+
+
+
 }
 
 <h1>BoughtProducts</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.productId)
+                Transaction Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.count)
+                Product name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.price)
+                Amount of products
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.buyerId)
+                Price
+            </th>
+            <th>
+                Seller's Email
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.productId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.count)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.buyerId)
-            </td>
-            <td>
-            </td>
-        </tr>
-}
+            if (item.buyerId == Context.Session.GetInt32("UserID"))
+            {
+
+                Product prod = new Product();
+                UserAccount seller = new UserAccount();
+
+                using (AppDbContext db = new AppDbContext())
+                {
+                    prod = db.product.Single(p => p.Id == item.productId);
+                    seller = db.userAccount.Single(p => p.UserID == prod.sellerId);
+                }
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @prod.Name
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.price)
+                    </td>
+                    <td>
+                        @seller.Email
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
+
+

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Marketplace.Models.Transaction>
+
+@{
+    ViewData["Title"] = "BoughtProducts";
+
+    
+
+
+
+}
+
+<h1>BoughtProducts</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Transaction Id
+            </th>
+            <th>
+                Product name
+            </th>
+            <th>
+                Amount of products
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Seller's Email
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            using (AppDbContext db = new AppDbContext())
+            {
+                Product prod = new Product();
+                UserAccount buyer = new UserAccount();
+                prod = db.product.Single(p => p.Id == item.productId);
+                buyer = db.userAccount.Single(p => p.UserID == item.buyerId);
+
+                if (prod.sellerId == Context.Session.GetInt32("UserID"))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @prod.Name
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.count)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.price)
+                        </td>
+                        <td>
+                            @buyer.Email
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+
+
